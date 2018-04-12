@@ -34,23 +34,23 @@ export default class MediaHelper extends Component<{}> {
       arrPhotos: []
     }
   }
-
+  
   componentWillMount() {
-    const { getPhotos, getVideos } = this.props
+    const {getPhotos, getVideos} = this.props
     // getPhotos ? this.getMedia('Photos', this.props.numPhotos): null
     // getVideos ? this.getMedia('Videos', this.props.numVideos) : null
-    Platform.OS === 'ios' ? this.getIosMedia() : this.getAndroidMedia()
+    Platform.OS === 'ios' ? this.getIosMedia () : this.getAndroidMedia ()
   }
 
   onPicker() {
-    const { getPhotos, getVideos } = this.props
+    const {getPhotos, getVideos} = this.props
     // getPhotos ? this.getMedia('Photos', this.props.numPhotos): null
     // getVideos ? this.getMedia('Videos', this.props.numVideos) : null
   }
 
-  getAndroidMedia() {
-    const { getPhotos, getVideos } = this.props
-    getPhotos ? this.onAndroidGetMedia('Photos', this.props.numPhotos) : null
+  getAndroidMedia () {
+    const {getPhotos, getVideos} = this.props
+    getPhotos ? this.onAndroidGetMedia('Photos', this.props.numPhotos): null
     getVideos ? this.onAndroidGetMedia('Videos', this.props.numVideos) : null
   }
 
@@ -84,23 +84,23 @@ export default class MediaHelper extends Component<{}> {
       })
   }
 
-  getIosMedia() {
-    const { media, num } = this.props
+  getIosMedia () {
+    const {media, num} = this.props
     CameraRoll.getPhotos({
       first: num,
       assetType: media,
     })
-      .then(r => {
-        // this.setState({ photos: r.edges });
-        var arrMedia = _.map(r.edges, e => {
-          e.node.image.thumbnailUrl = e.node.image.uri
-          return e
-        })
-        this.setState({ arrMedia })
+    .then(r => {
+      // this.setState({ photos: r.edges });
+      var arrMedia = _.map(r.edges, e => {
+        e.node.image.thumbnailUrl = e.node.image.uri
+        return e
       })
-      .catch((err) => {
-        //Error Loading Images
-      });
+      this.setState({ arrMedia })
+    })
+    .catch((err) => {
+       //Error Loading Images
+    });
   }
 
   onSelected(item) {
@@ -112,11 +112,11 @@ export default class MediaHelper extends Component<{}> {
   renderItem(item) {
     const { imagesPerRow, imageMargin } = this.props
     var imageSize = ((width - (imagesPerRow + 1) * imageMargin) / imagesPerRow)
-    const mediaType = Platform.OS === 'ios' ? 'ALAssetTypeVideo' : 'video/mp4'
 
+    Reactotron.log('iiiiiiiii')
+    Reactotron.log(item)
     return (
-      <TouchableOpacity onPress={() => this.onSelected(item)}
-        style={{ marginBottom: imageMargin, marginRight: imageMargin, height: imageSize, width: imageSize }}>
+      <TouchableOpacity onPress={() => this.onSelected(item)} style={{ marginBottom: imageMargin, marginRight: imageMargin, height: imageSize, width: imageSize }}>
         <Image
           source={{ uri: item.node.image.thumbnailUrl }}
           style={{
@@ -131,7 +131,7 @@ export default class MediaHelper extends Component<{}> {
           />
         ) : null}
         {
-          item.node.type === mediaType ? (
+          item.node.type === 'video/mp4' ? (
             <View style={[styles.rowInfoVideo, { height: imageSize * 0.2, top: imageSize - imageSize * 0.2 }]}>
               <Image source={require('./camera-video.png')} style={{ width: 20, height: 20 }} />
               <Text style={{ color: 'white' }}>{item.node.image.playableDuration}</Text>
@@ -156,7 +156,7 @@ export default class MediaHelper extends Component<{}> {
     return (
       <View style={styles.container}>
         <View style={styles.warpHeader}>
-          <View style={[{ flex: 1 }, this.props.headerLeftButton]}>
+          <View style={{ flex: 1 }}>
             {item ? (
               <TouchableOpacity onPress={() => this.setState({ item: null, selectedUriItem: null })}>
                 <Text style={styles.txtStyle}>Cancel</Text>
@@ -164,10 +164,10 @@ export default class MediaHelper extends Component<{}> {
             ) : <View />
             }
           </View>
-          <View style={[{ flex: 1, justifyContent: 'center', alignItems: 'center' }, this.props.headerMid]}>
+          <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
             <Text style={styles.txtStyle}>Select Items</Text>
           </View>
-          <View style={[{ flex: 1, alignItems: 'flex-end' }, this.props.headerRightButton]}>
+          <View style={{ flex: 1, alignItems: 'flex-end' }}>
             {item ? (
               <TouchableOpacity onPress={() => this.onSelectedItem()} >
                 <Text style={styles.txtStyle}>Done</Text>
@@ -176,13 +176,12 @@ export default class MediaHelper extends Component<{}> {
             }
           </View>
         </View>
-        <View style={[{ paddingLeft: imageMargin, paddingBottom: 40 }, this.props.warpList]}>
+        <View style={{ paddingLeft: imageMargin }}>
           <FlatList
             data={dataMedia}
             renderItem={({ item }) => this.renderItem(item)}
             keyExtractor={(item, index) => item.node.timestamp.toString()}
             numColumns={imagesPerRow}
-            extraData={this.state}
           />
         </View>
       </View>
@@ -242,6 +241,5 @@ const styles = StyleSheet.create({
   },
   txtStyle: {
     color: 'blue'
-  },
-
+  }
 });
