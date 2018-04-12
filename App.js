@@ -20,7 +20,7 @@ import {
 var { height, width } = Dimensions.get('window')
 
 import Reactotron from 'reactotron-react-native'
-import MediaHelper from './MediaHelperIos'
+import MediaHelper from './MediaHelper'
 
 export default class App extends Component<{}> {
   constructor(props) {

@@ -44,6 +44,7 @@ export default class MediaHelper extends Component<{}> {
 
   onPicker() {
     const { getPhotos, getVideos } = this.props
+    Platform.OS === 'ios' ? this.getIosMedia() : this.getAndroidMedia()
     // getPhotos ? this.getMedia('Photos', this.props.numPhotos): null
     // getVideos ? this.getMedia('Videos', this.props.numVideos) : null
   }
