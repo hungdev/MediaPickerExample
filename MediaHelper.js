@@ -157,21 +157,21 @@ export default class MediaHelper extends Component<{}> {
     return (
       <View style={styles.container}>
         <View style={styles.warpHeader}>
-          <View style={[{ flex: 1 }, this.props.headerLeftButton]}>
+          <View style={[{ flex: 1 }, this.props.headerLeftButtonStyle]}>
             {item ? (
               <TouchableOpacity onPress={() => this.setState({ item: null, selectedUriItem: null })}>
-                <Text style={styles.txtStyle}>Cancel</Text>
+                <Text style={styles.txtStyle}>{this.props.headerLeftButton}</Text>
               </TouchableOpacity>
             ) : <View />
             }
           </View>
-          <View style={[{ flex: 1, justifyContent: 'center', alignItems: 'center' }, this.props.headerMid]}>
-            <Text style={styles.txtStyle}>Select Items</Text>
+          <View style={[{ flex: 1, justifyContent: 'center', alignItems: 'center' }, this.props.headerMidStyle]}>
+            <Text style={styles.txtStyle}>{this.props.headerMid}</Text>
           </View>
-          <View style={[{ flex: 1, alignItems: 'flex-end' }, this.props.headerRightButton]}>
+          <View style={[{ flex: 1, alignItems: 'flex-end' }, this.props.headerRightButtonStyle]}>
             {item ? (
               <TouchableOpacity onPress={() => this.onSelectedItem()} >
-                <Text style={styles.txtStyle}>Done</Text>
+                <Text style={styles.txtStyle}>{this.props.headerRightButton}</Text>
               </TouchableOpacity>
             ) : <View />
             }
@@ -199,7 +199,10 @@ MediaHelper.defaultProps = {
   getPhotos: true,
   getVideos: true,
   media: Platform.OS === 'ios' ? 'All' : 'Photos',
-  num: 20
+  num: 20,
+  headerMid: 'Select Items',
+  headerLeftButton: 'Cancel',
+  headerRightButton: 'Done'
 }
 
 MediaHelper.propTypes = {
